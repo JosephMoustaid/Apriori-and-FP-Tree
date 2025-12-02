@@ -1,0 +1,88 @@
+"""
+# ==============================================================================
+# APRIORI ALGORITHM: ASSOCIATION RULE MINING GUIDE
+# ==============================================================================
+#
+# Apriori is a classic algorithm used to find frequent itemsets and derive
+# strong association rules (e.g., A => B) from large transactional databases.
+# It uses the key principle that any subset of a frequent itemset must also
+# be frequent, which significantly prunes the search space.
+#
+# ------------------------------------------------------------------------------
+# 1. CORE METRICS AND THRESHOLDS
+# ------------------------------------------------------------------------------
+#
+# To control the output quality, two primary user-defined thresholds are used:
+#
+# A. Support (Frequency)
+#    - Formula: Support(I) = Count(I) / N (Total Transactions)
+#    - Purpose: Measures the percentage of transactions containing itemset I.
+#    - Threshold: min_sup (Minimum Support Threshold). Itemsets below this value
+#                 are discarded as "infrequent."
+#
+# B. Confidence (Reliability)
+#    - Formula: Confidence(X => Y) = Support(X U Y) / Support(X)
+#    - Purpose: Measures the conditional probability that a transaction contains Y,
+#               given that it already contains X.
+#    - Threshold: min_conf (Minimum Confidence Threshold). Rules below this value
+#                 are considered unreliable.
+#
+# C. Lift (Correlation)
+#    - Formula: Lift(X => Y) = Confidence(X => Y) / Support(Y)
+#    - Purpose: Measures the actual correlation. Lift > 1 indicates a positive
+#               correlation (X makes Y more likely than random chance).
+#
+# ------------------------------------------------------------------------------
+# 2. ALGORITHM STEPS (Iterative Process: L1 -> L2 -> Lk)
+# ------------------------------------------------------------------------------
+#
+# PHASE I: FREQUENT ITEMSET GENERATION
+#
+# 1. L1 Generation (k=1)
+#    - Action: Scan the entire database once.
+#    - Output: C1 (All 1-itemsets).
+#    - Pruning: Discard all items in C1 where Support < min_sup. The result is L1.
+#
+# REPEAT FOR k = 2, 3, ... until Lk is empty:
+#
+# 2. Candidate Generation (Join Step)
+#    - Action: Generate candidate itemsets Ck by joining L(k-1) with L(k-1).
+#      (e.g., {A, B} joined with {A, C} from L2 yields {A, B, C} in C3).
+#
+# 3. Pruning (Apriori Principle in action)
+#    - Action: Test every candidate in Ck. If *any* (k-1) subset of a candidate
+#              is NOT present in L(k-1), discard the candidate Ck immediately.
+#    - Goal: Avoids expensive database scans for guaranteed infrequent sets.
+#
+# 4. Lk Selection
+#    - Action: Scan the database to count the true support for the remaining Ck.
+#    - Output: Select candidates meeting Support >= min_sup. The result is Lk.
+#
+# PHASE II: ASSOCIATION RULE GENERATION
+#
+# 5. Rule Creation
+#    - Action: For every itemset I in L_Final (the union of all Lk), generate all
+#              possible non-empty rules of the form X => Y, where X U Y = I.
+#
+# 6. Rule Filtering
+#    - Action: Calculate the Confidence for every rule X => Y.
+#    - Final Output: Keep only the rules where Confidence >= min_conf (and typically Lift > 1).
+#
+# ------------------------------------------------------------------------------
+# 3. REAL-WORLD USE CASES
+# ------------------------------------------------------------------------------
+#
+# - Retail: Market Basket Analysis (MBA). Optimal store placement and targeted
+#           promotions based on co-occurring product purchases.
+# - Web Mining: Analyzing user clickstreams (page sequences) to optimize web
+#               funnels and reduce friction points.
+# - Health/Bioinformatics: Identifying correlated symptoms or gene patterns.
+#
+# N : total number of transactions
+# W : max number of items in all itemsets
+# d : number of different items
+# Numbrt of possible itemset 2^d - 1
+# Number of possible assocaiton laws 3^d - 2^(d+1) - 1  
+# ==============================================================================
+"""
+
