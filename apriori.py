@@ -21,10 +21,10 @@ class Apriori():
         self.W = self.df.apply(lambda x: x.astype(str).str.len().max()).max() 
         
         # Use a list of sets for fast transaction lookups later
-        self.transactions = [set(item_list) for item_list in self.df['ProductName']]
+        self.transactions = [set(item_list) for item_list in self.df['ProductIDList']]
         
         # Initial item population
-        self.unique_1_items = self.df['ProductName'].explode().unique().tolist()
+        self.unique_1_items = self.df['ProductIDList'].explode().unique().tolist()
         self.d = len(self.unique_1_items)
         
         # Use Python power operator for arbitrary precision
@@ -240,9 +240,8 @@ class Apriori():
 
 if __name__ == "__main__" :
     # Configuration Parameters
-    MIN_SUP_COUNT = 3 # Absolute count threshold (e.g., must appear 4 times)
-    MIN_CONFIDENCE = 0.75 # Minimum confidence threshold (75%)
-    
+    MIN_SUP_COUNT = 2 # Absolute count threshold (e.g., must appear 4 times)
+    MIN_CONFIDENCE = -0.5    
     # 1. Initialize and Run
     apriori = Apriori(min_sup=MIN_SUP_COUNT, min_conf=MIN_CONFIDENCE)
     

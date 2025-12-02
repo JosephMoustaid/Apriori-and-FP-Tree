@@ -30,7 +30,7 @@ class FPGrowth:
         
         # --- Constants ---
         self.N = len(self.df)
-        self.unique_items = self.df['ProductName'].explode().unique().tolist()
+        self.unique_items = self.df['ProductIDList'].explode().unique().tolist()
         self.d = len(self.unique_items)
         
         # FP-Tree specific attributes
@@ -320,8 +320,8 @@ class FPGrowth:
 
 if __name__ == "__main__" :
     # Configuration Parameters
-    MIN_SUP_COUNT = 4 
-    MIN_CONFIDENCE = 0.75 
+    MIN_SUP_COUNT = 2
+    MIN_CONFIDENCE = 0.6 
     
     # 1. Initialize and Run
     fpgrowth = FPGrowth(min_sup=MIN_SUP_COUNT, min_conf=MIN_CONFIDENCE)
