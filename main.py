@@ -1,8 +1,8 @@
 import time
 import sys
-from apriori import Apriori
-from fpTree import FPGrowth
-from visualization import AlgorithmVisualizer, visualize_apriori_results, visualize_fpgrowth_results, visualize_rules
+from algorithms.apriori import Apriori
+from algorithms.fpTree import FPGrowth
+from algorithms.visualization import AlgorithmVisualizer, visualize_apriori_results, visualize_fpgrowth_results, visualize_rules
 
 
 def print_header(title):
