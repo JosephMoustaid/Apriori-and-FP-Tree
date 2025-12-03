@@ -113,23 +113,40 @@ def print_summary(apriori_itemsets, apriori_rules, apriori_time,
 
 
 def main():
-    MIN_SUP_COUNT = 5 
-    MIN_CONFIDENCE = 0.6
+    MIN_SUP_COUNT = 200
+    MIN_CONFIDENCE = 0.3
+    RUN_APRIORI = False
+    RUN_FPGROWTH = True
     
     print_header("FREQUENT PATTERN MINING & ASSOCIATION RULE LEARNING")
     print(f"Configuration:")
     print(f"  • Minimum Support Count: {MIN_SUP_COUNT}")
     print(f"  • Minimum Confidence: {MIN_CONFIDENCE * 100}%")
+    print(f"  • Run Apriori: {RUN_APRIORI}")
+    print(f"  • Run FP-Growth: {RUN_FPGROWTH}")
+    print(f"\n💡 Tip: Higher support count = faster execution but fewer patterns.")
+    print(f"   Adjust MIN_SUP_COUNT in main.py (try 200, 300, or 500).")
     
     try:
-
-        apriori_obj, apriori_itemsets, apriori_rules, apriori_time = run_apriori(
-            MIN_SUP_COUNT, MIN_CONFIDENCE
-        )
+        apriori_obj, apriori_itemsets, apriori_rules, apriori_time = None, None, None, 0
         
-        fpgrowth_obj, fpgrowth_itemsets, fpgrowth_rules, fpgrowth_time = run_fpgrowth(
-            MIN_SUP_COUNT, MIN_CONFIDENCE
-        )
+        if RUN_APRIORI:
+            apriori_obj, apriori_itemsets, apriori_rules, apriori_time = run_apriori(
+                MIN_SUP_COUNT, MIN_CONFIDENCE
+            )
+        else:
+            print_header("APRIORI ALGORITHM - SKIPPED")
+            print("Set RUN_APRIORI = True in main.py to enable Apriori.")
+        
+        fpgrowth_obj, fpgrowth_itemsets, fpgrowth_rules, fpgrowth_time = None, None, None, 0
+        
+        if RUN_FPGROWTH:
+            fpgrowth_obj, fpgrowth_itemsets, fpgrowth_rules, fpgrowth_time = run_fpgrowth(
+                MIN_SUP_COUNT, MIN_CONFIDENCE
+            )
+        else:
+            print_header("FP-GROWTH ALGORITHM - SKIPPED")
+            print("Set RUN_FPGROWTH = True in main.py to enable FP-Growth.")
 
         
         if apriori_itemsets and fpgrowth_itemsets:
@@ -138,10 +155,11 @@ def main():
                 fpgrowth_itemsets, fpgrowth_time
             )
         
-        print_summary(
-            apriori_itemsets, apriori_rules, apriori_time,
-            fpgrowth_itemsets, fpgrowth_rules, fpgrowth_time
-        )
+        if apriori_itemsets or fpgrowth_itemsets:
+            print_summary(
+                apriori_itemsets, apriori_rules, apriori_time,
+                fpgrowth_itemsets, fpgrowth_rules, fpgrowth_time
+            )
         
         print_header("✓ ALL OPERATIONS COMPLETED SUCCESSFULLY")
         
